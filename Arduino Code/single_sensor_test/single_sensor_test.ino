@@ -1,3 +1,11 @@
+/* single_sensor_test.ino
+ * By: Zack Johnson, Osip Surdutovich, Kanisk Pandey
+ * 
+ * Simple program to read the temperature and address from a single DS18B20 Sensor.
+ * This program can be used to test the operation of the sensors as well as to determine 
+ * their addresses for sensor locating.
+*/
+
 #include <EEPROM.h>
 #include <OneWire.h>
 #include <DallasTemperature.h>

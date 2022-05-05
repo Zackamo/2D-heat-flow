@@ -12,7 +12,13 @@ void setup() {
   Serial.begin(9600);
   Serial.println("Dallas Temperature IC Control Library Demo");
   sensors.begin();
-  
+  int size = sensors.getDS18Count();
+  uint8_t addresses[size];
+  for(int i = 0; i< size; i++){
+    uint8_t *temp;
+    sensors.getAddress(temp,i);
+    addresses[i] = *temp;
+  }
 }
 
 void loop() {
