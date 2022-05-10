@@ -15,12 +15,14 @@
 OneWire oneWire(ONE_WIRE_BUS);
 DallasTemperature sensors(&oneWire);
 
+DeviceAddress address;
+DeviceAddress value;
+
 void setup() {
   // put your setup code here, to run once:
   Serial.begin(9600);
   Serial.println("Dallas Temperature IC Control Library Demo");
   sensors.begin();
-  
 }
 
 void loop() {
@@ -29,11 +31,30 @@ void loop() {
   sensors.requestTemperatures();
   Serial.println("Done");
   Serial.print("Temperature is: "); 
-  Serial.print(sensors.getTempCByIndex(0));
-  uint8_t* address = 0;
+  Serial.println(sensors.getTempCByIndex(0));
   sensors.getAddress(address,0);
-  Serial.print("Sensor Address: ");
-  Serial.println(*address,HEX);
+  printAddress(address);
+  Serial.println(sizeof(address));
+  EEPROM.put(10, address);
   delay(1000);
+  EEPROM.get(10, value);
+  printAddress(value);
+  if(sensors.validAddress(value)){
+    Serial.println("yay!");
+  }
+  else{
+    Serial.println("uh oh!");  
+  }
+}
 
+// function to print a device address
+void printAddress(DeviceAddress deviceAddress)
+{
+  for (uint8_t i = 0; i < 8; i++)
+  {
+    // zero pad the address if necessary
+    if (deviceAddress[i] < 16) Serial.print("0");
+    Serial.print(deviceAddress[i], HEX);
+  }
+  Serial.println("");
 }
