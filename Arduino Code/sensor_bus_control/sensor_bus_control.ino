@@ -7,17 +7,27 @@
 OneWire oneWire(ONE_WIRE_BUS);
 DallasTemperature sensors(&oneWire);
 
+#define NUM_SENSORS
+
+DeviceAddress addresses[NUM_SENSORS];
+
 void setup() {
   // put your setup code here, to run once:
   Serial.begin(9600);
   Serial.println("Dallas Temperature IC Control Library Demo");
   sensors.begin();
-  int size = sensors.getDS18Count();
-  uint8_t addresses[size];
-  for(int i = 0; i< size; i++){
-    uint8_t *temp;
-    sensors.getAddress(temp,i);
-    addresses[i] = *temp;
+  DeviceAddress temp;
+  for(int i = 0; i < NUM_SENSORS; i++){
+    EEPROM.get(8*i, temp)
+    if(sensors.validAddress(temp)){
+      addresses[i] = temp;
+    }
+    else{
+      Serial.print("Failed to Detect Sensor at Position: ");
+      Serial.print(i);
+      Serial.print(", Address: ");
+      Serial.println(temp);
+    }
   }
 }
 
@@ -28,7 +38,7 @@ void loop() {
   Serial.println("Done");
   Serial.print("Temperature is: "); 
   Serial.print(sensors.getTempCByIndex(0));
-  uint8_t* address = 0;
+  address = 0;
   sensors.getAddress(address,0);
   Serial.print("Sensor Address: ");
   Serial.println(*address);

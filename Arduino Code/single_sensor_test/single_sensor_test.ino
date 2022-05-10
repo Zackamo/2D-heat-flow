@@ -17,12 +17,15 @@ DallasTemperature sensors(&oneWire);
 
 DeviceAddress address;
 DeviceAddress value;
+int mem_pos = 0;
+bool done;
 
 void setup() {
   // put your setup code here, to run once:
   Serial.begin(9600);
   Serial.println("Dallas Temperature IC Control Library Demo");
   sensors.begin();
+  done = false;
 }
 
 void loop() {
@@ -35,12 +38,15 @@ void loop() {
   sensors.getAddress(address,0);
   printAddress(address);
   Serial.println(sizeof(address));
-  EEPROM.put(10, address);
+  if(!done){
+    EEPROM.put(8 * mem_pos, address);
+  }
   delay(1000);
-  EEPROM.get(10, value);
+  EEPROM.get(8 * mem_pos, value);
   printAddress(value);
   if(sensors.validAddress(value)){
     Serial.println("yay!");
+    done = true;
   }
   else{
     Serial.println("uh oh!");  
