@@ -33,7 +33,7 @@ void loop() {
   uint8_t* address = 0;
   sensors.getAddress(address,0);
   Serial.print("Sensor Address: ");
-  Serial.println(*address);
+  Serial.println(*address,HEX);
   delay(1000);
 
 }
