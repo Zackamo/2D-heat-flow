@@ -3,7 +3,11 @@
  * 
  * Simple program to read the temperature and address from a single DS18B20 Sensor.
  * This program can be used to test the operation of the sensors as well as to determine 
- * their addresses for sensor locating.
+ * and save their addresses for sensor locating.
+ * 
+ * For the sensor loading operation set mem_pos = 0 for sensor (0,0). Then connect the data 
+ * pin for the sensor to pin 2, reset the arduino and check that serial has printed saved. 
+ * then increment mem_pos, move to (1,0) and repeat.
 */
 
 #include <EEPROM.h>
@@ -37,7 +41,6 @@ void loop() {
   Serial.println(sensors.getTempCByIndex(0));
   sensors.getAddress(address,0);
   printAddress(address);
-  Serial.println(sizeof(address));
   if(!done){
     EEPROM.put(8 * mem_pos, address);
   }
@@ -45,7 +48,7 @@ void loop() {
   EEPROM.get(8 * mem_pos, value);
   printAddress(value);
   if(sensors.validAddress(value)){
-    Serial.println("yay!");
+    Serial.println("Saved!");
     done = true;
   }
   else{
