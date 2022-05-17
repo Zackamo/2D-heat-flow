@@ -21,7 +21,7 @@ DallasTemperature sensors(&oneWire);
 
 DeviceAddress address;
 DeviceAddress value;
-int mem_pos = 0;
+int mem_pos = 71;
 bool done;
 
 void setup() {
@@ -54,6 +54,8 @@ void loop() {
   else{
     Serial.println("uh oh!");  
   }
+  while(true){
+    }
 }
 
 // function to print a device address
