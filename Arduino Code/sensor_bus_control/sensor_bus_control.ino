@@ -46,7 +46,7 @@ void loop() {
     for (int j = 0; j < 9; j++){
       int location = (i*9)+j;
       float temperature = sensors.getTempC(address_list[0]);
-      String packet = String("");
+      String packet = String("&");
       packet += i;
       packet += ",";
       packet += j;
