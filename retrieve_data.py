@@ -1,4 +1,5 @@
 import serial
+import numpy as np
 import matplotlib.pyplot as plt
 
 def split(word):
@@ -11,76 +12,59 @@ ser = serial.Serial(
     bytesize=serial.EIGHTBITS
 )
 
-'''all_data = []
-i = 0
-data = ""
-while(True):
+all_data = []
+flag = True
+data = ''
+error_string = ''
+data_flag = False
+
+while(flag):
     if (ser.inWaiting()):
-        line = ser.read(ser.inWaiting())
-        print(line)
-        split = line.split()
-        print(split)
-        for i in line:
-            if i == "|":
-                print(data)
-                all_data.append(data)
+        character = ser.read(1)
+        ascii_char = chr(character[0])
+
+        if (ascii_char == '&'):
+            data_flag = True
+
+        elif (data_flag):
+            if (ascii_char == '|'):
+                data_flag = False
+                if len(data) > 0:
+                    all_data.append(str.strip(data))
                 data = ''
             else:
-                print(chr(i))
-                data += chr(i)
-    i += 1
+                data = data + str(ascii_char)
+                #print("data: " + str(data))
 
-print(all_data)
-
-print("//////////////////////////////////////")'''
-
-all_data = []
-
-i = 0
-flag = True
-while(flag):
-    data = ''
-    if (ser.inWaiting()):
-        line = ser.read(1)
-        print("line: " + str(line))
-        s_line = split(line)
-        #print("split: " + str(split(line)))
-        s_line2 = []
-        for i in s_line:
-            s_line2.append(chr(i))
-        print("split2: " + str(s_line2))
-        #print("character: " + str(chr(i)))
-        if (chr(i) == '|'):
-            #print("data: " + str(data))
-            if "End of timestep" in data:
-                print("HELLLLOOO")
-                flag = False
-            elif "Failed to Detect Sensor at Position" not in data and "F" not in data and data != "":
-                all_data.append(str.strip(data))
-                print("all_data: " + str(all_data))
-                data = ''
         else:
-            data += chr(i)
-            print("data: " + str(data))
-    i += 1
-
+            error_string = error_string + str(ascii_char)
+            if "End of timestep" in error_string:
+                flag = False
+            #print("ascii_char: " + str(ascii_char))
+            #print("data: " + str(error_string))
+        #print(all_data)
 
 print("all_data: " + str(all_data))
 print("END")
 
-'''coords1 = []
-coords2 = []
+all_time_steps = []
+x = []
+y = []
 temps = []
 
+t_arr=np.linspace(0,5,1)
 for i in all_data:
     values = i.split(",")
-    coords1.append(values[0])
-    coords2.append(values[1])
+    x.append(values[0])
+    y.append(values[1])
     temps.append(values[2])
 
-print(coords1)
-print(coords2)
-print(temps)'''
+all_time_steps.append(temps)
+
+print(x)
+print(y)
+print(temps)
+print(all_time_steps)
 
 
 ser.close()
