@@ -43,18 +43,10 @@ def main_function(ti, tf):
 
         for t in range(ti, tf):
             for x in range(1, rows - 1):
-                # print("x: " + str(x))
                 for y in range(1, cols - 1):
-                    # print("y: " + str(y))
-                    # print(arr_old[x][y])
                     arr_new[x][y] = (1 - 4 * mesh_fourier_num) * arr_old[x][y] + mesh_fourier_num * (
                                 arr_old[x + 1][y] + arr_old[x][y + 1] + arr_old[x - 1][y] + arr_old[x][y - 1])
-                    # print("arr_new[x][y]: " + str(arr_new[x][y]))
-                    # print("first part: " + str((1 - 4*mesh_fourier_num)*arr_old[x][y]))
-                    # print("second part: " + str(mesh_fourier_num*(arr_old[x+1][y]+arr_old[x][y+1]+ \
-                    # arr_old[x-1][y]+arr_old[x][y-1])))
 
-                    # clear_output(wait=True)
             arr_old = arr_new
 
         # print(arr_old)
@@ -65,19 +57,22 @@ def main_function(ti, tf):
         arr_truncated = np.delete(arr_truncated, 0, axis=0)
         arr_truncated = np.delete(arr_truncated, -1, axis=0)
         # print(arr_truncated)
-
-        plt.imshow(arr_truncated, cmap="plasma")
+        mynorm = plt.Normalize(vmin=16, vmax=32)
+        plt.imshow(arr_truncated, cmap="plasma", norm = mynorm)
         plt.colorbar()
         plt.show()
+        plt.savefig(str(tf) + ".png") \
+        #plt.clf()
+        plt.close()
 
 
-# In[5]:
+    # In[5]:
 
 
 # time_arr=np.linspace(0,10,10)
 # print(len(time_arr))
 new_point = 0
-for i in tqdm(range(50)):
+for i in tqdm(range(200)):
     new_point += 1
     clear_output(wait=True)
     main_function(0, new_point)
