@@ -12,6 +12,8 @@ DallasTemperature sensors(&oneWire);
 double measurement_rate = 1; //Time between measurements in seconds
 DeviceAddress address_list[NUM_SENSORS];
 DeviceAddress currentAddr;
+unsigned long delay_time = measurement_rate * 1000;
+unsigned long last_measurement = 0;
 
 void setup() {
   // put your setup code here, to run once:
@@ -32,27 +34,28 @@ void printAddress(DeviceAddress deviceAddress)
 
 void loop() {
   // put your main code here, to run repeatedly:
-  sensors.requestTemperatures();
-  int EAddress = 0;
-  for (int n = 0; n < NUM_SENSORS; n++){
-      for(byte b = 0; b < 8; b++){
-          currentAddr[b] = EEPROM.read(EAddress);
-          EAddress += 1;
+  if(millis()- last_measurement >= delay_time){
+    sensors.requestTemperatures();
+    int EAddress = 0;
+    for (int n = 0; n < NUM_SENSORS; n++){
+        for(byte b = 0; b < 8; b++){
+            currentAddr[b] = EEPROM.read(EAddress);
+            EAddress += 1;
+        }
+        int i = n / 9;
+        int j = n % 9;
+        printAddress(currentAddr);
+        float temperature = sensors.getTempC(currentAddr);
+        Serial.println(temperature);
+        String packet = String("&");
+        packet += i;
+        packet += ",";
+        packet += j;
+        packet += ",";
+        packet += temperature;
+        packet += "|";
+        Serial.println(packet);
       }
-      int i = n / 9;
-      int j = n % 9;
-      printAddress(currentAddr);
-      float temperature = sensors.getTempC(currentAddr);
-      Serial.println(temperature);
-      String packet = String("&");
-      packet += i;
-      packet += ",";
-      packet += j;
-      packet += ",";
-      packet += temperature;
-      packet += "|";
-      Serial.println(packet);
-    }
-  Serial.println("End of timestep|");
-  delay(1000 * measurement_rate);
+    Serial.println("End of timestep|");
+  }
 }
