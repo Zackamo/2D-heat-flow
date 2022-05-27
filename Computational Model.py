@@ -4,7 +4,7 @@ import math
 from IPython.display import clear_output
 import tqdm
 from tqdm import tqdm
-
+TRIAL = 1
 data_file = open("data_exp_1.txt", 'r')
 lines = data_file.readlines()
 data_file_comp = open("data_comp_1.txt", 'w')
@@ -53,8 +53,22 @@ rows, cols = (11, 11)
 arr_old = np.array([[20 for i in range(cols)] for j in range(rows)], dtype=float)
 for i in all_x:
     for j in all_y:
-        arr_old[int(i) + 1][int(j) + 1]=all_temps[9*int(i)+int(j)]
-
+        arr_old[int(j) + 1][int(i) + 1]=all_temps[9*int(i)+int(j)]
+for x in range(cols):
+    for y in range(cols):
+        #print(arr_old[y][x])
+        if (x == 0):
+            arr_old[y][x] = arr_old[y][x+1]
+        if (x == 10):
+            arr_old[y][x] = arr_old[y][x-1]
+        if (y == 0):
+            arr_old[y][x] = arr_old[y+1][x]
+        if (y == 10):
+            arr_old[y][x] = arr_old[y-1][x]
+        if (x == 0 and y == 0):
+            arr_old[y][x] = arr_old[y+1][x+1]
+        if (x == 10 and y == 0):
+            arr_old[y][x] = arr_old[y][x-1]
 arr_new = arr_old.copy()
 
 sensor_temp = []
@@ -65,33 +79,55 @@ for t in range(0, n):
             data_file_comp.write("\nTimestep: " + str(int(t * del_t)) + " s\n")
         else:
             data_file_comp.write("Timestep: " + str(int(t * del_t)) + " s\n")
+        output = np.array([[0 for i in range(cols - 2)] for j in range(rows - 2)], dtype=float)
+        num = 0
+        for i in arr_old[1:-1]:
+            output[num] = i[1:-1]
+            num += 1
         mynorm = plt.Normalize(vmin=21, vmax=22)
-        plt.imshow(arr_new, cmap="rainbow", norm=mynorm, interpolation="gaussian")
+        plt.imshow(output, cmap="rainbow", norm=mynorm, interpolation="gaussian")
         plt.title("Timestep: " + str(int(t*del_t)))
         plt.colorbar()
         #plt.show()
-        plt.savefig("comp_" + str(int(t*del_t)) + "_.png")
+        plt.savefig("comp_" + str(TRIAL) + "_" + str(int(t*del_t)) + "_.png")
         plt.close()
+        print(output.round(2))
     for x in range(1, rows - 1):
         for y in range(1, cols - 1):
-            arr_new[x][y] = (1 - 4 * mesh_fourier_num) * arr_old[x][y] + mesh_fourier_num * (
-                        arr_old[x + 1][y] + arr_old[x][y + 1] + arr_old[x - 1][y] + arr_old[x][y - 1])
+            arr_new[y][x] = (1 - 4 * mesh_fourier_num) * arr_old[y][x] + mesh_fourier_num * (
+                        arr_old[y + 1][x] + arr_old[y][x + 1] + arr_old[y - 1][x] + arr_old[y][x - 1])
+            #print("arr_new")
+            #print(arr_new)
+            for x2 in range(cols):
+                for y2 in range(cols):
+                    # print(arr_old[y][x])
+                    if (x2 == 0):
+                        arr_new[y2][x2] = arr_new[y2][x2 + 1]
+                    if (x2 == 10):
+                        arr_new[y2][x2] = arr_new[y2][x2 - 1]
+                    if (y2 == 0):
+                        arr_new[y2][x2] = arr_new[y2 + 1][x2]
+                    if (y2 == 10):
+                        arr_new[y2][x2] = arr_new[y2 - 1][x2]
+                    if (x2 == 0 and y2 == 0):
+                        arr_new[y2][x2] = arr_new[y2 + 1][x2 + 1]
+                    if (x2 == 10 and y2 == 0):
+                        arr_new[y2][x2] = arr_new[y2][x2 - 1]
+            #print("arr_new")
+            #print(arr_new)
             if x == 5 and y == 5:
-                sensor_temp.append((1 - 4 * mesh_fourier_num) * arr_old[x][y] + mesh_fourier_num * (
-                        arr_old[x + 1][y] + arr_old[x][y + 1] + arr_old[x - 1][y] + arr_old[x][y - 1]))
+                sensor_temp.append((1 - 4 * mesh_fourier_num) * arr_old[y][x] + mesh_fourier_num * (
+                        arr_old[y + 1][x] + arr_old[y][x + 1] + arr_old[y - 1][x] + arr_old[y][x - 1]))
 
             if t % 500 == 0:
-                data_file_comp.write(str(x - 1) + "," + str(y - 1) + "," + str(round(arr_old[x][y], 2)) + "\n")
+                data_file_comp.write(str(x - 1) + "," + str(y - 1) + "," + str(round(arr_old[y][x], 2)) + "\n")
     arr_old = arr_new
 
-# print(arr_old)
-# print(arr_new)
 arr_truncated = arr_new
 arr_truncated = np.delete(arr_truncated, (0), axis=1)
 arr_truncated = np.delete(arr_truncated, (-1), axis=1)
 arr_truncated = np.delete(arr_truncated, 0, axis=0)
 arr_truncated = np.delete(arr_truncated, -1, axis=0)
-# print(arr_truncated)
 mynorm = plt.Normalize(vmin=10, vmax=50)
 plt.imshow(arr_truncated, cmap="rainbow_r", norm = mynorm)
 plt.colorbar()

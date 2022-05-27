@@ -1,6 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
+TRIAL = 1
 data_file = open("data_exp_1.txt", 'r')
 lines = data_file.readlines()
 
@@ -46,13 +47,14 @@ for i in (range(len(all_temps))):
         yPos = int(all_y[i][j])
         T = all_temps[i][j]
         arr[yPos][xPos] = T
+        print(arr)
         if xPos == 8 and yPos == 8:
             mynorm = plt.Normalize(vmin=21, vmax=22)
             plt.imshow(arr, cmap = "rainbow", norm = mynorm, interpolation="gaussian")
             plt.colorbar()
             plt.title("Timestep: " + str(i))
-            #plt.show()
-            plt.savefig("exp_" + str(i) + "_.png")
+            plt.show()
+            plt.savefig("exp_" + str(TRIAL) + "_" + str(i) + "_.png")
             plt.close()
         if xPos == 4 and yPos == 4:
             sensor_temp.append(T)
