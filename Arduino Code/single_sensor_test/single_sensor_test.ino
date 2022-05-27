@@ -21,7 +21,7 @@ DallasTemperature sensors(&oneWire);
 
 DeviceAddress address;
 DeviceAddress value;
-int mem_pos = 72; //don't run under 72
+int mem_pos = 81; //don't run under 80
 bool done;
 
 void setup() {
