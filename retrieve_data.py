@@ -2,6 +2,7 @@ import serial
 import numpy as np
 import matplotlib.pyplot as plt
 
+TRIAL = 3
 
 def split(word):
     return [char for char in word]
@@ -19,10 +20,10 @@ data = ''
 error_string = ''
 data_flag = False
 
-data_file = open("data_exp_1.txt", 'w')
+data_file = open("data_exp_" + str(TRIAL) + ".txt", 'w')
 
 i = 0
-num_time_steps = 3
+num_time_steps = 180
 
 data_file.write("Timestep: " + str(i) + " s\n")
 
@@ -64,11 +65,20 @@ x = []
 y = []
 temps = []
 
+min_temp = 50
+max_temp = 0
+
+
 for i in all_data:
     values = i.split(",")
     x.append(values[0])
     y.append(values[1])
     temps.append(values[2])
+    if values[2] > max_temp:
+        max_temp = values[2]
+
+    if values[2] < min_temp:
+        min_temp = values[2]
 
     if int(values[0]) == 8 and int(values[1]) == 8:
         all_time_steps.append(temps)
@@ -78,6 +88,8 @@ for i in all_data:
         y = []
         temps = []
 
+print(min_temp)
+print(max_temp)
 
 ser.close()
 
@@ -98,7 +110,7 @@ for i in (range(len(all_time_steps))):
             plt.imshow(arr, cmap = "rainbow", norm = mynorm, interpolation="gaussian")
             plt.colorbar()
             plt.title("Timestep: " + str(i))
-            plt.show()
+            #plt.show()
             #plt.savefig("exp_" + str(i) + "_.png")
         if xPos == 4 and yPos == 4:
             sensor_temp.append(T)

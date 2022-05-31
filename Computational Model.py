@@ -4,10 +4,10 @@ import math
 from IPython.display import clear_output
 import tqdm
 from tqdm import tqdm
-TRIAL = 1
-data_file = open("data_exp_1.txt", 'r')
+TRIAL = 3
+data_file = open("data_exp_" + str(TRIAL) + ".txt", 'r')
 lines = data_file.readlines()
-data_file_comp = open("data_comp_1.txt", 'w')
+data_file_comp = open("data_comp_" + str(TRIAL) + ".txt", 'w')
 
 rows, cols = (9, 9)
 arr = np.array([[20 for i in range(cols)] for j in range(rows)], dtype=float)
@@ -41,10 +41,10 @@ all_temps = all_temps[0]
 all_x = all_x[0]
 all_y = all_y[0]
 
-rho = 2710  # mass density
-cp = 0.897  # heat capacity
+rho = 2710  # mass density 2710
+cp = 8.97  # heat capacity 0.897
 k = 237  # thermal conductivity
-n = 1500  # time steps
+n = 90000  # time steps
 del_x = 0.29  # spatial step
 del_t = 0.002
 mesh_fourier_num = k * del_t / (cp * rho * del_x ** 2)
@@ -74,7 +74,7 @@ arr_new = arr_old.copy()
 sensor_temp = []
 
 for t in range(0, n):
-    if t % 500 == 0:
+    if t % 15000 == 0:
         if t != 0:
             data_file_comp.write("\nTimestep: " + str(int(t * del_t)) + " s\n")
         else:
@@ -84,7 +84,7 @@ for t in range(0, n):
         for i in arr_old[1:-1]:
             output[num] = i[1:-1]
             num += 1
-        mynorm = plt.Normalize(vmin=21, vmax=22)
+        mynorm = plt.Normalize(vmin=21, vmax=45)
         plt.imshow(output, cmap="rainbow", norm=mynorm, interpolation="gaussian")
         plt.title("Timestep: " + str(int(t*del_t)))
         plt.colorbar()
