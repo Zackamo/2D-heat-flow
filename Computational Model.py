@@ -4,7 +4,7 @@ import math
 from IPython.display import clear_output
 import tqdm
 from tqdm import tqdm
-TRIAL = 8
+TRIAL = 3
 data_file = open("data_exp_" + str(TRIAL) + ".txt", 'r')
 lines = data_file.readlines()
 data_file_comp = open("data_comp_" + str(TRIAL) + ".txt", 'w')
@@ -92,7 +92,6 @@ for t in range(0, n):
         plt.title("Timestep: " + str(int(t*del_t)))
         plt.xticks([0, 2, 4, 6, 8], fontsize=14)
         plt.yticks([0, 2, 4, 6, 8], fontsize=14)
-        plt.colorbar()
         #plt.show()
         plt.savefig("comp_" + str(TRIAL) + "_" + str(int(t*del_t)) + "_.png")
         plt.close()

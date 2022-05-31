@@ -1,6 +1,7 @@
 import matplotlib.pyplot as plt
 import numpy as np
 import math
+from scipy.stats import chisquare
 
 TRIAL = 8
 exp_data = open("data_exp_" + str(TRIAL) + ".txt", 'r')
@@ -91,5 +92,10 @@ ax.set_yticklabels(['20', '21', '22', '23', '24', '25'], Fontsize = 14)
 plt.text(0.08, 0.2, 'sin')
 plt.text(0.9, 0.2, 'cos')
 plt.show()
+
+print(chisquare(exp_sensor_22[0:90], f_exp=comp_sensor_22[0:90]))
+print(chisquare(exp_sensor_26[0:90], f_exp=comp_sensor_26[0:90]))
+print(chisquare(exp_sensor_62[0:90], f_exp=comp_sensor_62[0:90]))
+print(chisquare(exp_sensor_66[0:90], f_exp=comp_sensor_66[0:90]))
 
 
