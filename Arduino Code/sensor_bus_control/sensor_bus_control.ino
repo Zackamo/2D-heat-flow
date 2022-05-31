@@ -35,6 +35,7 @@ void printAddress(DeviceAddress deviceAddress)
 void loop() {
   // put your main code here, to run repeatedly:
   if(millis()- last_measurement >= delay_time){
+    last_measurement = millis();
     sensors.requestTemperatures();
     int EAddress = 0;
     for (int n = 0; n < NUM_SENSORS; n++){
