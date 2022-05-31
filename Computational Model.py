@@ -4,7 +4,7 @@ import math
 from IPython.display import clear_output
 import tqdm
 from tqdm import tqdm
-TRIAL = 3
+TRIAL = 8
 data_file = open("data_exp_" + str(TRIAL) + ".txt", 'r')
 lines = data_file.readlines()
 data_file_comp = open("data_comp_" + str(TRIAL) + ".txt", 'w')
@@ -74,7 +74,8 @@ arr_new = arr_old.copy()
 sensor_temp = []
 
 for t in range(0, n):
-    if t % 15000 == 0:
+    print(t*del_t)
+    if t % 2500 == 0:
         if t != 0:
             data_file_comp.write("\nTimestep: " + str(int(t * del_t)) + " s\n")
         else:
@@ -84,9 +85,13 @@ for t in range(0, n):
         for i in arr_old[1:-1]:
             output[num] = i[1:-1]
             num += 1
-        mynorm = plt.Normalize(vmin=21, vmax=45)
+        mynorm = plt.Normalize(vmin=-15, vmax=40)
         plt.imshow(output, cmap="rainbow", norm=mynorm, interpolation="gaussian")
+        cbar = plt.colorbar()
+        cbar.set_label('\N{DEGREE SIGN} C', fontsize=12)
         plt.title("Timestep: " + str(int(t*del_t)))
+        plt.xticks([0, 2, 4, 6, 8], fontsize=14)
+        plt.yticks([0, 2, 4, 6, 8], fontsize=14)
         plt.colorbar()
         #plt.show()
         plt.savefig("comp_" + str(TRIAL) + "_" + str(int(t*del_t)) + "_.png")

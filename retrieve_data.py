@@ -2,7 +2,13 @@ import serial
 import numpy as np
 import matplotlib.pyplot as plt
 
-TRIAL = 3
+#3 is heatgun at top right
+#4 is dry ice at bottom right
+#5 heat gun top left, dry ice bottom right
+#6 heat gun top right, dry ice bottom right
+#7 Time step test
+#8 heat gun top left, dry ice bottom right, recollect with heat gun pointing away from dry ice
+TRIAL = 8
 
 def split(word):
     return [char for char in word]
@@ -74,10 +80,10 @@ for i in all_data:
     x.append(values[0])
     y.append(values[1])
     temps.append(values[2])
-    if values[2] > max_temp:
+    if float(values[2]) > max_temp:
         max_temp = values[2]
 
-    if values[2] < min_temp:
+    if float(values[2]) < min_temp:
         min_temp = values[2]
 
     if int(values[0]) == 8 and int(values[1]) == 8:
