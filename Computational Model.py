@@ -4,7 +4,7 @@ import math
 from IPython.display import clear_output
 import tqdm
 from tqdm import tqdm
-TRIAL = 3
+TRIAL = 6
 data_file = open("data_exp_" + str(TRIAL) + ".txt", 'r')
 lines = data_file.readlines()
 data_file_comp = open("data_comp_" + str(TRIAL) + ".txt", 'w')
@@ -42,7 +42,7 @@ all_x = all_x[0]
 all_y = all_y[0]
 
 rho = 2710  # mass density 2710
-cp = 8.97  # heat capacity 0.897
+cp = 0.897  # heat capacity 0.897
 k = 237  # thermal conductivity
 n = 90000  # time steps
 del_x = 0.29  # spatial step

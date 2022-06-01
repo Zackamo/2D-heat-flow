@@ -1,7 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-TRIAL = 8
+TRIAL = 9
 data_file = open("data_exp_" + str(TRIAL) + ".txt", 'r')
 lines = data_file.readlines()
 

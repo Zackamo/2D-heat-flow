@@ -8,7 +8,8 @@ import matplotlib.pyplot as plt
 #6 heat gun top right, dry ice bottom right
 #7 Time step test
 #8 heat gun top left, dry ice bottom right, recollect with heat gun pointing away from dry ice
-TRIAL = 8
+#9 dry ice in middle, moving around on plate
+TRIAL = 9
 
 def split(word):
     return [char for char in word]
