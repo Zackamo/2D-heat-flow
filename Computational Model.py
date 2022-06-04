@@ -5,8 +5,6 @@ from IPython.display import clear_output
 import tqdm
 from tqdm import tqdm
 
-print(4 == 4)
-
 TRIAL = 6
 data_file = open("data_exp_" + str(TRIAL) + ".txt", 'r')
 lines = data_file.readlines()
