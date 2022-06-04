@@ -1,7 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-TRIAL = 9
+TRIAL = 6
 data_file = open("data_exp_" + str(TRIAL) + ".txt", 'r')
 lines = data_file.readlines()
 
@@ -55,12 +55,12 @@ for i in (range(len(all_temps))):
                 print(i)
                 mynorm = plt.Normalize(vmin=-15, vmax=40)
                 plt.imshow(arr, cmap = "rainbow", norm = mynorm, interpolation="gaussian")
-                cbar = plt.colorbar()
+                cbar = plt.colorbar() #orientation = "horizontal"
                 cbar.set_label('\N{DEGREE SIGN} C', fontsize=12)
                 plt.title("Timestep: " + str(i))
                 plt.xticks([0, 2, 4, 6, 8], fontsize=14)
                 plt.yticks([0, 2, 4, 6, 8], fontsize=14)
-                plt.savefig("exp_" + str(TRIAL) + "_" + str(i) + "_.png")
+                plt.savefig("exp_" + str(TRIAL) + "_" + str(i) + "_.png", dpi = 1000)
                 print(i*3)
                 plt.close()
                 plt.show()

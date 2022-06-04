@@ -4,6 +4,9 @@ import math
 from IPython.display import clear_output
 import tqdm
 from tqdm import tqdm
+
+print(4 == 4)
+
 TRIAL = 6
 data_file = open("data_exp_" + str(TRIAL) + ".txt", 'r')
 lines = data_file.readlines()
@@ -41,12 +44,12 @@ all_temps = all_temps[0]
 all_x = all_x[0]
 all_y = all_y[0]
 
-rho = 2710  # mass density 2710
-cp = 0.897  # heat capacity 0.897
-k = 237  # thermal conductivity
+rho = 2710  # mass density, in kg / m3
+cp = 0.897  # heat capacity, in J / g degree C
+k = 237  # thermal conductivity, in W / m K
 n = 90000  # time steps
-del_x = 0.29  # spatial step
-del_t = 0.002
+del_x = 0.29  # spatial step, in cm
+del_t = 0.002 # time step, in s
 mesh_fourier_num = k * del_t / (cp * rho * del_x ** 2)
 
 rows, cols = (11, 11)
